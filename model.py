@@ -15,3 +15,11 @@ class WeatherInfo(Base):
   code = IntegerField()
   body = CharField()
   image_path = CharField()
+
+class Weather(Base):
+  high_temperature = IntegerField()
+  low_temperature  = IntegerField()
+  current_temperature = IntegerField()
+  forecast = CharField()
+  title = CharField()
+  created_at = DateTimeField(default = datetime.now().strftime('%Y-%m-%d %H:%M'), constraints=[SQL('DEFAULT CURRENT_TIMESTAMP')])

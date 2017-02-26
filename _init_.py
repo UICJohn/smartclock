@@ -3,6 +3,11 @@ from model import *
 if __name__ == "__main__":
   
   try:
-    StartUpCheck.create_table()
+    WeatherInfo.create_table()
   except:
-    print "TABLES ALREADY EXISTS!"
+    print "TABLES WeatherInfo ALREADY EXISTS!"
+
+  try:
+    Weather.create_table()
+  except:
+    print "TABLES Weather ALREADY EXISTS!"
