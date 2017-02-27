@@ -61,17 +61,48 @@ void processMsg(String mesg){
     String temp = val.substring(0, f);
     String high = val.substring(f+1, s);
     String low = val.substring(s+1, val.length());
-    printWeatherInfo(temp, high, low, 90, 150);
+    printWeatherInfo(temp, high, low, 120, 145);
+  }else if(key == "future"){
+    int f = val.indexOf(",");
+    int s = val.lastIndexOf(",");
+    String t1 = val.substring(0,f);
+    String t2 = val.substring(f+1, s);
+    String t3 = val.substring(s+1, val.length());
+    printFutureInfo(t1,t2, t3);
   }else if(key == "temp_image"){
     char filename[40];
     val.toCharArray(filename, 40);
-    bmpDraw(&filename[0], 10, 120);
+    bmpDraw(&filename[0], 10, 110);
   }else if(key == "humidity"){
     bmpDraw("/mnt/sda1/images/medium/humidity.bmp", 30, 280);
     printHumidity(val, 60, 300);
+  }else if(key == "forcast_image1"){
+    char filename[40];
+    val.toCharArray(filename, 40);
+    bmpDraw(&filename[0], 25, 195);
+  }else if(key == "forcast_image2"){
+    char filename[40];
+    val.toCharArray(filename, 40);
+    bmpDraw(&filename[0], 95, 195);
+  }else if(key == "forcast_image3"){
+    char filename[40];
+    val.toCharArray(filename, 40);
+    bmpDraw(&filename[0], 165, 195);
   }
 }
-
+void printFutureInfo(String t1, String t2, String t3){
+  tft.setFont(&FreeSerif9pt7b);
+  tft.setTextColor(ILI9341_LIGHTGREY);
+  tft.setCursor(35, 260);
+  tft.print(t1);
+  tft.print("'C");
+  tft.setCursor(105, 260);
+  tft.print(t2);
+  tft.print("'C");
+  tft.setCursor(175, 260);
+  tft.print(t3);
+  tft.print("'C");
+}
 void printHumidity(String humidity, int x, int y){
   tft.setFont(&FreeSerif9pt7b);
   tft.setTextColor(ILI9341_LIGHTGREY);
@@ -127,7 +158,7 @@ void printWeatherInfo(String temp, String high, String low, int x, int y){
   tft.print(temp);
   tft.print("'C");
   tft.setFont(&FreeSerif9pt7b);
-  tft.setCursor(x+20, y+30);
+  tft.setCursor(x-10, y+30);
   tft.print(low);
   tft.print(" 'C ~ ");
   tft.print(high);
@@ -232,13 +263,6 @@ void bmpDraw(char *filename, uint8_t x, uint16_t y) {
         tft.setAddrWindow(x, y, x+w-1, y+h-1);
 
         for (row=0; row<h; row++) { // For each scanline...
-
-          // Seek to start of scan line.  It might seem labor-
-          // intensive to be doing this on every line, but this
-          // method covers a lot of gritty details like cropping
-          // and scanline padding.  Also, the seek only takes
-          // place if the file position actually needs to change
-          // (avoids a lot of cluster math in SD library).
           if(flip) // Bitmap is stored bottom-to-top order (normal BMP)
             pos = bmpImageoffset + (bmpHeight - 1 - row) * rowSize;
           else     // Bitmap is stored top-to-bottom
