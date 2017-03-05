@@ -12,9 +12,9 @@ class Base(Model):
     select()
 
 class WeatherInfo(Base):
-  code = IntegerField()
-  text = CharField()
-  image_path = CharField()
+  code = IntegerField(unique = True)
+  body = CharField()
+  image_path = CharField(null = True)
 
 class Weather(Base):
   code = IntegerField()
@@ -23,7 +23,7 @@ class Weather(Base):
   text = CharField()
   created_at = DateTimeField(default = datetime.now().strftime('%Y-%m-%d %H:%M'), constraints=[SQL('DEFAULT CURRENT_TIMESTAMP')])
 
-class Forecast(object):
+class Forecast(Base):
   code = IntegerField()
   high = IntegerField()
   low  = IntegerField()

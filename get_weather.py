@@ -40,10 +40,12 @@ bc.begin()
 print "bc.begin"
 bc.mailbox("temperature:" + current.temperature + "," + weathers[0].high + "," + weathers[0].low)
 bc.mailbox("humidity:" + getWeatherByAddressResults.get_Humidity())
-bc.mailbox("temp_image:/mnt/sda1/images/medium/" + wi.get(wi.code = current.code).image_path)
+weather_info = wi.get_or_create
+bc.mailbox("temp_image:/mnt/sda1/images/medium/" + (wi.get_or_create(code = current.code, body= current.text))[0].image_path)
 bc.mailbox("future:"+ weathers[1].high+","+weathers[2].high+","+weathers[3].high)
-for weather in weathers:
-  bc.mailbox("forcast_image1:/mnt/sda1/images/small/"+ wi.get(wi.code = weather.code).image_path)
+for index in weathers:
+  if(index < 3):
+    bc.mailbox("forcast_image"+str(index+1)+":/mnt/sda1/images/small/"+ (wi.get_or_create(code = weathers[index].code, body=weathers[index].text))[0].image_path)
 
 bc.close()
 print "bc.close"
