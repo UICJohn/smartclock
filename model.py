@@ -2,7 +2,7 @@ from peewee import *
 import sys
 from datetime import datetime
 
-db = SqliteDatabase('/root/smartclock.db')
+db = SqliteDatabase('/root/smartclock/smartclock.db')
 
 class Base(Model):
   class Meta:
