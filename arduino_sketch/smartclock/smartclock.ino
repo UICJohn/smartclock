@@ -15,7 +15,6 @@
 #define TFT_MISO 12
 #define TFT_CLK 13
 #define BUFFPIXEL 20
-#define PATH_PREFIX "/mnt/sda1/images/medium/"
 
 Process dateTime;
 int hours, minutes;
@@ -74,7 +73,7 @@ void processMsg(String mesg){
     val.toCharArray(filename, 40);
     bmpDraw(&filename[0], 10, 110);
   }else if(key == "humidity"){
-    bmpDraw("/mnt/sda1/images/medium/humidity.bmp", 30, 280);
+    bmpDraw("/root/images/medium/humidity.bmp", 30, 280);
     printHumidity(val, 60, 300);
   }else if(key == "forcast_image1"){
     char filename[40];
