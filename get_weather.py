@@ -23,7 +23,7 @@ getWeatherByAddressResults = getWeatherByAddressChoreo.execute_with_results(getW
 
 res = json.loads(getWeatherByAddressResults.get_Response())
 forecasts = res["channel"]["item"]["yweather:forecast"]
-current= w.create(code = getWeatherByAddressResults.get_ConditionCode(),  temperature = getWeatherByAddressResults.get_Temperature(),text= getWeatherByAddressResults.get_ForecastText(), humidity = getWeatherByAddressResults.get_Humidity())
+current= w.create(code = getWeatherByAddressResults.get_ForecastCode(),  temperature = getWeatherByAddressResults.get_Temperature(),text= getWeatherByAddressResults.get_ForecastText(), humidity = getWeatherByAddressResults.get_Humidity())
 
 weathers = {}
 counter = 0
@@ -38,14 +38,16 @@ counter = 0
 bc = bridgeclient()
 bc.begin()
 print "bc.begin"
+print "code = " + str(current.code) + "text = " + current.text
 bc.mailbox("temperature:" + current.temperature + "," + weathers[0].high + "," + weathers[0].low)
 bc.mailbox("humidity:" + getWeatherByAddressResults.get_Humidity())
 weather_info = wi.get_or_create
-bc.mailbox("temp_image:/mnt/sda1/images/medium/" + (wi.get_or_create(code = current.code, body= current.text))[0].image_path)
+bc.mailbox("temp_image:/root/images/medium/" + (wi.get_or_create(code = current.code, body= current.text))[0].image_path)
+print (wi.get_or_create(code=current.code, body = current.text))[0].image_path
 bc.mailbox("future:"+ weathers[1].high+","+weathers[2].high+","+weathers[3].high)
 for index in weathers:
   if(index < 3):
-    bc.mailbox("forcast_image"+str(index+1)+":/mnt/sda1/images/small/"+ (wi.get_or_create(code = weathers[index].code, body=weathers[index].text))[0].image_path)
+    bc.mailbox("forcast_image"+str(index+1)+":/root/images/small/"+ (wi.get_or_create(code = weathers[index].code, body=weathers[index].text))[0].image_path)
 
 bc.close()
 print "bc.close"
